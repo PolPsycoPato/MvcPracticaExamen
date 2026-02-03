@@ -13,7 +13,6 @@ namespace MvcPracticaExamen.Repositories
             this.connectionString = configuration.GetConnectionString("SqlHospital");
         }
 
-        // --- LECTURAS ---
 
         public List<string> GetFunciones()
         {
@@ -57,11 +56,9 @@ namespace MvcPracticaExamen.Repositories
             SqlParameter param = new SqlParameter("@EMPLEADO_NO", idEmpleado);
             var lista = ExecuteQueryPlantilla(spName, param);
 
-            // Si la lista está vacía, devolverá null y activará tu redirección
             return lista.FirstOrDefault();
         }
 
-        // --- ACCIONES (UPSERT y DELETE) ---
 
         public void UpsertPlantilla(MvcPracticaExamen.Models.Plantilla p)
         {
@@ -75,7 +72,6 @@ namespace MvcPracticaExamen.Repositories
                 com.Parameters.AddWithValue("@EMPLEADO_NO", p.EmpleadoNo);
                 com.Parameters.AddWithValue("@APELLIDO", p.Apellido);
                 com.Parameters.AddWithValue("@FUNCION", p.Funcion);
-                // Control de nulos seguro
                 if (p.T == null) com.Parameters.AddWithValue("@T", DBNull.Value);
                 else com.Parameters.AddWithValue("@T", p.T);
 
@@ -98,8 +94,6 @@ namespace MvcPracticaExamen.Repositories
             }
         }
 
-        // --- MÉTODO CLAVE: EL MAPEO ---
-        // Aquí es donde probablemente estaba fallando la lectura del ID
         private List<Plantilla> ExecuteQueryPlantilla(string spName, SqlParameter param)
         {
             List<Plantilla> lista = new List<Plantilla>();
@@ -116,13 +110,11 @@ namespace MvcPracticaExamen.Repositories
                 {
                     var emp = new Plantilla();
 
-                    // Mapeo robusto: convierte a String primero para evitar errores de tipo
                     emp.EmpleadoNo = int.Parse(reader["EMPLEADO_NO"].ToString());
                     emp.Apellido = reader["APELLIDO"].ToString();
                     emp.Funcion = reader["FUNCION"].ToString();
                     emp.Salario = int.Parse(reader["SALARIO"].ToString());
 
-                    // Manejo de posibles nulos en la BDD
                     if (reader["HOSPITAL_COD"] != DBNull.Value)
                         emp.HospitalCod = int.Parse(reader["HOSPITAL_COD"].ToString());
 

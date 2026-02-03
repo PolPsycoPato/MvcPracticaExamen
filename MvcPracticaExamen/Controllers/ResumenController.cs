@@ -53,7 +53,6 @@ namespace MvcPracticaExamen.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                // --------------------------
 
                 return View(p);
             }
