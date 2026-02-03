@@ -1,0 +1,30 @@
+﻿@model MvcPracticaExamen.Models.ModelPlantillaResumen
+
+<form method="post">
+    <label>Selecciona Función:</label>
+    <select name="funcion" class="form-control">
+        @foreach (string func in (List<string>)ViewData["FUNCIONES"])
+        {
+            <option value="@func">@func</option>
+        }
+    </select>
+    <button type="submit" class="btn btn-info">Buscar</button>
+</form>
+
+@if (Model != null)
+{
+    <div class="alert alert-secondary mt-3">
+        <p>Suma: @Model.SumaSalarial | Máximo: @Model.MaximoSalario | Media: @Model.MediaSalarial.ToString("N2")</p>
+    </div>
+
+    <table class="table">
+        @foreach (var p in Model.Plantilla)
+        {
+            <tr>
+                <td>@p.Apellido</td>
+                <td>@p.Funcion</td>
+                <td>@p.Salario</td>
+            </tr>
+        }
+    </table>
+}

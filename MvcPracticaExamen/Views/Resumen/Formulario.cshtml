@@ -1,0 +1,67 @@
+﻿@model MvcPracticaExamen.Models.Plantilla
+
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3>@ViewData["Title"]</h3>
+        </div>
+        <div class="card-body">
+            <form method="post" asp-controller="Resumen" asp-action="Formulario">
+
+                <div class="mb-3">
+                    <label class="form-label">Nº Empleado</label>
+                    @if (Model.EmpleadoNo != 0)
+                    {
+                        <input asp-for="EmpleadoNo" class="form-control" readonly />
+                    }
+                    else
+                    {
+                        <input asp-for="EmpleadoNo" class="form-control" type="number" required />
+                    }
+                    <span asp-validation-for="EmpleadoNo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Apellido</label>
+                    <input asp-for="Apellido" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Función</label>
+                    <input asp-for="Funcion" class="form-control" required />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Salario (€)</label>
+                        <input asp-for="Salario" class="form-control" type="number" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Turno</label>
+                        <select asp-for="T" class="form-select">
+                            <option value="M">Mañana</option>
+                            <option value="T">Tarde</option>
+                            <option value="N">Noche</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Hospital Cod</label>
+                        <input asp-for="HospitalCod" class="form-control" type="number" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Sala Cod</label>
+                        <input asp-for="SalaCod" class="form-control" type="number" />
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success btn-lg">💾 Guardar Datos</button>
+                    <a asp-controller="Resumen" asp-action="Index" class="btn btn-secondary">🔙 Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

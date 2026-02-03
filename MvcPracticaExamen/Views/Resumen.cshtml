@@ -1,0 +1,126 @@
+﻿@using MvcPracticaExamen.Models
+@model ModelPlantillaResumen
+
+@{
+    ViewData["Title"] = "Resumen de Plantilla";
+    string funcionActual = ViewData["Funcion"] as string;
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary">Gestión de Plantilla (Full Stack)</h2>
+    <hr />
+
+    <div class="card p-3 mb-4 bg-light">
+        <form method="get" asp-controller="Resumen" asp-action="Index" class="row align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Filtrar por Función:</label>
+                <select name="funcion" class="form-select">
+                    <option value="">-- Todas las Funciones --</option>
+                    @if (ViewBag.Funciones != null)
+                    {
+                        foreach (string f in ViewBag.Funciones)
+                        {
+                            if (funcionActual == f)
+                            {
+                                <option value="@f" selected>@f</option>
+                            }
+                            else
+                            {
+                                <option value="@f">@f</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">
+                    🔍 Buscar Empleados
+                </button>
+            </div>
+            <div class="col-md-4 text-end">
+                <a asp-controller="Resumen" asp-action="Formulario" class="btn btn-success">
+                    ➕ Nueva Persona
+                </a>
+            </div>
+        </form>
+    </div>
+
+  
+    @if (Model != null && Model.Plantilla != null && Model.Plantilla.Count > 0)
+    {
+        <div class="row mb-3 text-center">
+            <div class="col-md-4">
+                <div class="alert alert-success">
+                    <h6>Salario Máximo</h6>
+                    <h4>@Model.MaximoSalario.ToString("C")</h4>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="alert alert-warning">
+                    <h6>Media Salarial</h6>
+                    <h4>@Model.MediaSalarial.ToString("C")</h4>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="alert alert-info">
+                    <h6>Suma Total</h6>
+                    <h4>@Model.SumaSalarial.ToString("C")</h4>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Apellido</th>
+                    <th>Función</th>
+                    <th>Salario</th>
+                    <th>Turno</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var emp in Model.Plantilla)
+                {
+                    <tr>
+                        <td>@emp.Apellido</td>
+                        <td>
+                            <span class="badge bg-secondary">@emp.Funcion</span>
+                        </td>
+                        <td>@emp.Salario.ToString("C")</td>
+                        <td>@emp.T</td>
+                        <td class="text-center">
+                            <a asp-controller="Resumen"
+                               asp-action="Formulario"
+                               asp-route-id="@emp.EmpleadoNo"
+                               class="btn btn-outline-primary btn-sm">
+                                ✏️ Editar
+                            </a>
+
+                            <a asp-controller="Resumen"
+                               asp-action="Delete"
+                               asp-route-id="@emp.EmpleadoNo"
+                               asp-route-funcionActual="@funcionActual"
+                               class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('¿Estás seguro de eliminar a @emp.Apellido?');">
+                                🗑️ Borrar
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (!string.IsNullOrEmpty(funcionActual))
+    {
+        <div class="alert alert-danger">
+            No existen empleados asignados a la función: <strong>@funcionActual</strong>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Selecciona una función para ver los datos o añade un nuevo empleado.
+        </div>
+    }
+</div>
