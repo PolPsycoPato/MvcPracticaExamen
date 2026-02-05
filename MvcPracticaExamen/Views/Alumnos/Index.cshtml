@@ -1,29 +1,106 @@
 ﻿@model List<Alumno>
 @{
-    ViewData["Title"] = "Alumnos";
-}   
-<h1>Alumnos</h1>
-<table class="table">
-    <thead>
-        <tr>
-            
-            <th>NombreUsuario</th>
-            <th>Apellido</th>
-            <th>Edad</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var alumno in Model)
-        {
-            <tr>
-                <td>@alumno.NombreCurso</td>
-                <td>@alumno.NombreUsuario</td>
-                <td>@alumno.APELLIDOS</td>
-                <td>@alumno.IDCURSO</td>
-                <td>
-                    <a asp-controller="Alumnos" asp-action="Detalles" asp-route-id="@alumno.IDUSUARIO" class="btn btn-primary">Editar</a>
-                </td>
-            </tr>
+    ViewData["Title"] = "Gestión de Alumnos";
+}
+
+<style>
+    /* Estética de Tabla Corporativa */
+    .table-formal {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        color: #333;
+    }
+
+        .table-formal thead th {
+            background-color: #f8f9fa;
+            color: #212529;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            padding: 12px;
+            border-bottom: 2px solid #343a40;
         }
-    </tbody>
+
+        .table-formal tbody td {
+            padding: 15px 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 0.9rem;
+        }
+
+        .table-formal tbody tr:hover {
+            background-color: #f1f1f1; /* Efecto hover sutil */
+        }
+
+    .btn-action {
+        border-radius: 0;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: bold;
+        padding: 5px 15px;
+        border: 1px solid #343a40;
+        color: #343a40;
+        background: transparent;
+        transition: all 0.3s;
+    }
+
+        .btn-action:hover {
+            background: #343a40;
+            color: #fff;
+        }
+
+    .title-border {
+        border-left: 5px solid #212529;
+        padding-left: 15px;
+        margin-bottom: 30px;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="title-border text-formal-dark">Registro General de Alumnos</h2>
+
+            <div class="table-responsive shadow-sm">
+                <table class="table-formal">
+                    <thead>
+                        <tr>
+                            <th>ID Curso</th>
+                            <th>Nombre del Curso</th>
+                            <th>Usuario</th>
+                            <th>Apellidos</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var alumno in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold text-muted">#@alumno.IDCURSO</td>
+                                <td>@alumno.NombreCurso</td>
+                                <td class="text-formal-dark">@alumno.NombreUsuario</td>
+                                <td>@alumno.APELLIDOS</td>
+                                <td class="text-center">
+                                    <a asp-controller="Alumnos"
+                                       asp-action="Detalles"
+                                       asp-route-id="@alumno.IDUSUARIO"
+                                       class="btn btn-action">
+                                        <i class="bi bi-pencil-square me-1"></i> Gestionar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-3 text-end">
+                <p class="small text-muted text-uppercase">Total registros: @Model.Count</p>
+            </div>
+        </div>
+    </div>
+</div>

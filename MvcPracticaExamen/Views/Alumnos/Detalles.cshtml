@@ -1,73 +1,122 @@
-﻿<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow-lg">
-            <div class="card-header bg-primary text-white">
-                <h1 class="card-title mb-0">
-                    <i class="bi bi-person-badge"></i> Ficha del Alumno
-                </h1>
-            </div>
+﻿<style>
+    /* Estilos personalizados para sobriedad máxima */
+    .card-formal {
+        border: 1px solid #dee2e6;
+        border-radius: 0;
+    }
 
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-md-4 text-center mb-3 mb-md-0">
-                        @if (!string.IsNullOrEmpty(Model.IMAGEN))
-                        {
-                            <img src="@Model.IMAGEN"
-                                 class="img-fluid rounded-circle border border-4 border-light shadow"
-                                 style="width: 180px; height: 180px; object-fit: cover;"
-                                 alt="Imagen de @Model.NombreUsuario"
-                                 onerror="this.src='https://via.placeholder.com/150';" />
-                        }
-                        else
-                        {
-                            <img src="https://via.placeholder.com/150" class="img-fluid rounded-circle" alt="Sin imagen" />
-                        }
-                    </div>
+    .header-dark-gray {
+        background-color: #212529;
+        color: #ffffff;
+        border-radius: 0;
+    }
 
-                    <div class="col-md-8">
-                        <h2 class="text-primary fw-bold">@Model.NombreUsuario @Model.APELLIDOS</h2>
-                        <p class="text-muted"><i class="bi bi-envelope"></i> @Model.EMAIL</p>
-                        <hr />
+    .text-formal-dark {
+        color: #343a40;
+    }
 
-                        <dl class="row">
-                            <dt class="col-sm-4">Curso:</dt>
-                            <dd class="col-sm-8 fw-bold">@Model.NombreCurso</dd>
+    .text-formal-muted {
+        color: #6c757d;
+    }
 
-                            <dt class="col-sm-4">Fecha Inicio:</dt>
-                            <dd class="col-sm-8">@Model.FECHAINICIO?.ToShortDateString()</dd>
+    .img-gray-border {
+        border: 3px solid #e9ecef !important;
+        filter: grayscale(20%);
+    }
 
-                            <dt class="col-sm-4">Fecha Fin:</dt>
-                            <dd class="col-sm-8">@Model.FECHAFIN?.ToShortDateString()</dd>
+    .badge-formal {
+        background-color: #495057;
+        color: white;
+        border-radius: 2px;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+    }
 
-                            <dt class="col-sm-4">Inscripción:</dt>
-                            <dd class="col-sm-8">@Model.fecha_inscripcion.ToShortDateString()</dd>
+    .btn-formal {
+        border-radius: 0;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+    }
 
-                            <dt class="col-sm-4">Capitanía:</dt>
-                            <dd class="col-sm-8">
-                                @if (Model.quiere_ser_capitan)
-                                {
-                                    <span class="badge bg-success rounded-pill px-3">
-                                        <i class="bi bi-star-fill"></i> Quiere ser Capitán
+    hr.formal-hr {
+        border-top: 2px solid #343a40;
+        opacity: 1;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <div class="card card-formal shadow-sm">
+                <div class="card-header header-dark-gray py-3">
+                    <h5 class="card-title mb-0 text-uppercase fw-light">
+                        <i class="bi bi-person-vcard me-2"></i> Expediente Académico
+                    </h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-4 text-center border-end">
+                            @if (!string.IsNullOrEmpty(Model.IMAGEN))
+                            {
+                                <img src="@Model.IMAGEN"
+                                     class="img-fluid img-gray-border shadow-sm mb-3"
+                                     style="width: 160px; height: 160px; object-fit: cover;"
+                                     alt="Perfil @Model.NombreUsuario" />
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/150?text=SIN+FOTO" class="img-fluid img-gray-border" alt="Sin imagen" />
+                            }
+                            <p class="small text-formal-muted">ID ALUMNO: @Model.EMAIL.Split('@')[0]</p>
+                        </div>
+
+                        <div class="col-md-8 ps-md-4">
+                            <h2 class="text-formal-dark fw-bold mb-1">@Model.NombreUsuario @Model.APELLIDOS</h2>
+                            <p class="text-formal-muted mb-3"><i class="bi bi-envelope-at me-1"></i> @Model.EMAIL</p>
+
+                            <hr class="formal-hr w-25" />
+
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label class="text-uppercase small fw-bold text-muted d-block">Curso</label>
+                                    <span class="text-formal-dark">@Model.NombreCurso</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="text-uppercase small fw-bold text-muted d-block">Inscripción</label>
+                                    <span class="text-formal-dark">@Model.fecha_inscripcion.ToShortDateString()</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="text-uppercase small fw-bold text-muted d-block">Periodo Lectivo</label>
+                                    <span class="text-formal-dark">
+                                        @Model.FECHAINICIO?.ToShortDateString() — @Model.FECHAFIN?.ToShortDateString()
                                     </span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary rounded-pill px-3">
-                                        No solicita capitanía
-                                    </span>
-                                }
-                            </dd>
-                        </dl>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="text-uppercase small fw-bold text-muted d-block">Estatus Capitanía</label>
+                                    @if (Model.quiere_ser_capitan)
+                                    {
+                                        <span class="badge badge-formal">
+                                            <i class="bi bi-shield-check"></i> SOLICITANTE
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-formal-muted small italic">No solicitada</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card-footer text-end bg-light">
-                <a asp-controller="Alumnos" asp-action="Index" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left"></i> Volver al listado
-                </a>
+                <div class="card-footer bg-white border-top-0 p-3">
+                    <a asp-controller="Alumnos" asp-action="Index" class="btn btn-outline-dark btn-formal">
+                        <i class="bi bi-chevron-left"></i> Retornar al registro
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
